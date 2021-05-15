@@ -40,3 +40,50 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }
+
+// API 名
+val apiName = "pet"
+// ビルド先ディレクトリ
+val buildApiDir = "$buildDir/openApiGenerator/$apiName"
+// 自動生成先のパッケージ名
+val basePackage = "net.chigita.openapigenexample.gen"
+
+fun String.packageToDir() = replace('.', '/')
+
+task<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("generate") {
+    doFirst {
+        delete(file(buildApiDir))
+    }
+
+    generatorName.set("kotlin")
+    library.set("jvm-retrofit2")
+    inputSpec.set("$rootDir/spec/spec.yml")
+    outputDir.set(buildApiDir)
+    packageName.set(basePackage)
+    apiPackage.set("$basePackage.$apiName.api")
+    modelPackage.set("$basePackage.$apiName.model")
+    configOptions.set(mapOf(
+        "dateLibrary" to "java8"
+    ))
+    additionalProperties.set(mapOf(
+        "doNotUseRxAndCoroutines" to "true"
+    ))
+    generateApiTests.set(false)
+}
+
+task<Copy>("copy") {
+    val dirFrom = "$buildApiDir/src/main/kotlin/${basePackage.packageToDir()}/"
+    val dirInto = "$projectDir/src/main/java/${basePackage.packageToDir()}/"
+
+    doFirst {
+        delete(file(dirInto))
+    }
+
+    dependsOn("generate")
+    from(dirFrom)
+    into(dirInto)
+}
+
+task("buildApi") {
+    dependsOn("generate", "copy")
+}
