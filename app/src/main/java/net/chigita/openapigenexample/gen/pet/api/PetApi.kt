@@ -2,7 +2,7 @@ package net.chigita.openapigenexample.gen.pet.api
 
 import net.chigita.openapigenexample.gen.infrastructure.CollectionFormats.*
 import retrofit2.http.*
-import retrofit2.Call
+import retrofit2.Response
 import okhttp3.RequestBody
 
 import net.chigita.openapigenexample.gen.pet.model.ApiResponse
@@ -18,10 +18,10 @@ interface PetApi {
      *  - 405: Invalid input
      * 
      * @param body Pet object that needs to be added to the store 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @POST("pet")
-    fun addPet(@Body body: Pet): Call<Unit>
+    suspend fun addPet(@Body body: Pet): Response<Unit>
 
     /**
      * Deletes a pet
@@ -32,10 +32,10 @@ interface PetApi {
      * 
      * @param petId Pet id to delete 
      * @param apiKey  (optional)
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @DELETE("pet/{petId}")
-    fun deletePet(@Path("petId") petId: kotlin.Long, @Header("api_key") apiKey: kotlin.String): Call<Unit>
+    suspend fun deletePet(@Path("petId") petId: kotlin.Long, @Header("api_key") apiKey: kotlin.String): Response<Unit>
 
     /**
      * Finds Pets by status
@@ -45,10 +45,10 @@ interface PetApi {
      *  - 400: Invalid status value
      * 
      * @param status Status values that need to be considered for filter 
-     * @return [Call]<[kotlin.collections.List<Pet>]>
+     * @return [kotlin.collections.List<Pet>]
      */
     @GET("pet/findByStatus")
-    fun findPetsByStatus(@Query("status") status: kotlin.collections.List<kotlin.String>): Call<kotlin.collections.List<Pet>>
+    suspend fun findPetsByStatus(@Query("status") status: kotlin.collections.List<kotlin.String>): Response<kotlin.collections.List<Pet>>
 
     /**
      * Finds Pets by tags
@@ -58,11 +58,11 @@ interface PetApi {
      *  - 400: Invalid tag value
      * 
      * @param tags Tags to filter by 
-     * @return [Call]<[kotlin.collections.List<Pet>]>
+     * @return [kotlin.collections.List<Pet>]
      */
     @Deprecated("This api was deprecated")
     @GET("pet/findByTags")
-    fun findPetsByTags(@Query("tags") tags: kotlin.collections.List<kotlin.String>): Call<kotlin.collections.List<Pet>>
+    suspend fun findPetsByTags(@Query("tags") tags: kotlin.collections.List<kotlin.String>): Response<kotlin.collections.List<Pet>>
 
     /**
      * Find pet by ID
@@ -73,10 +73,10 @@ interface PetApi {
      *  - 404: Pet not found
      * 
      * @param petId ID of pet to return 
-     * @return [Call]<[Pet]>
+     * @return [Pet]
      */
     @GET("pet/{petId}")
-    fun getPetById(@Path("petId") petId: kotlin.Long): Call<Pet>
+    suspend fun getPetById(@Path("petId") petId: kotlin.Long): Response<Pet>
 
     /**
      * Update an existing pet
@@ -87,10 +87,10 @@ interface PetApi {
      *  - 405: Validation exception
      * 
      * @param body Pet object that needs to be added to the store 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @PUT("pet")
-    fun updatePet(@Body body: Pet): Call<Unit>
+    suspend fun updatePet(@Body body: Pet): Response<Unit>
 
     /**
      * Updates a pet in the store with form data
@@ -101,11 +101,11 @@ interface PetApi {
      * @param petId ID of pet that needs to be updated 
      * @param name Updated name of the pet (optional)
      * @param status Updated status of the pet (optional)
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @FormUrlEncoded
     @POST("pet/{petId}")
-    fun updatePetWithForm(@Path("petId") petId: kotlin.Long, @Field("name") name: kotlin.String, @Field("status") status: kotlin.String): Call<Unit>
+    suspend fun updatePetWithForm(@Path("petId") petId: kotlin.Long, @Field("name") name: kotlin.String, @Field("status") status: kotlin.String): Response<Unit>
 
     /**
      * uploads an image
@@ -116,10 +116,10 @@ interface PetApi {
      * @param petId ID of pet to update 
      * @param additionalMetadata Additional data to pass to server (optional)
      * @param file file to upload (optional)
-     * @return [Call]<[ApiResponse]>
+     * @return [ApiResponse]
      */
     @Multipart
     @POST("pet/{petId}/uploadImage")
-    fun uploadFile(@Path("petId") petId: kotlin.Long, @Part("additionalMetadata") additionalMetadata: kotlin.String, @Part file: MultipartBody.Part): Call<ApiResponse>
+    suspend fun uploadFile(@Path("petId") petId: kotlin.Long, @Part("additionalMetadata") additionalMetadata: kotlin.String, @Part file: MultipartBody.Part): Response<ApiResponse>
 
 }

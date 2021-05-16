@@ -2,7 +2,7 @@ package net.chigita.openapigenexample.gen.pet.api
 
 import net.chigita.openapigenexample.gen.infrastructure.CollectionFormats.*
 import retrofit2.http.*
-import retrofit2.Call
+import retrofit2.Response
 import okhttp3.RequestBody
 
 import net.chigita.openapigenexample.gen.pet.model.User
@@ -15,10 +15,10 @@ interface UserApi {
      *  - 0: successful operation
      * 
      * @param body Created user object 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @POST("user")
-    fun createUser(@Body body: User): Call<Unit>
+    suspend fun createUser(@Body body: User): Response<Unit>
 
     /**
      * Creates list of users with given input array
@@ -27,10 +27,10 @@ interface UserApi {
      *  - 0: successful operation
      * 
      * @param body List of user object 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @POST("user/createWithArray")
-    fun createUsersWithArrayInput(@Body body: kotlin.collections.List<User>): Call<Unit>
+    suspend fun createUsersWithArrayInput(@Body body: kotlin.collections.List<User>): Response<Unit>
 
     /**
      * Creates list of users with given input array
@@ -39,10 +39,10 @@ interface UserApi {
      *  - 0: successful operation
      * 
      * @param body List of user object 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @POST("user/createWithList")
-    fun createUsersWithListInput(@Body body: kotlin.collections.List<User>): Call<Unit>
+    suspend fun createUsersWithListInput(@Body body: kotlin.collections.List<User>): Response<Unit>
 
     /**
      * Delete user
@@ -52,10 +52,10 @@ interface UserApi {
      *  - 404: User not found
      * 
      * @param username The name that needs to be deleted 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @DELETE("user/{username}")
-    fun deleteUser(@Path("username") username: kotlin.String): Call<Unit>
+    suspend fun deleteUser(@Path("username") username: kotlin.String): Response<Unit>
 
     /**
      * Get user by user name
@@ -66,10 +66,10 @@ interface UserApi {
      *  - 404: User not found
      * 
      * @param username The name that needs to be fetched. Use user1 for testing.  
-     * @return [Call]<[User]>
+     * @return [User]
      */
     @GET("user/{username}")
-    fun getUserByName(@Path("username") username: kotlin.String): Call<User>
+    suspend fun getUserByName(@Path("username") username: kotlin.String): Response<User>
 
     /**
      * Logs user into the system
@@ -80,10 +80,10 @@ interface UserApi {
      * 
      * @param username The user name for login 
      * @param password The password for login in clear text 
-     * @return [Call]<[kotlin.String]>
+     * @return [kotlin.String]
      */
     @GET("user/login")
-    fun loginUser(@Query("username") username: kotlin.String, @Query("password") password: kotlin.String): Call<kotlin.String>
+    suspend fun loginUser(@Query("username") username: kotlin.String, @Query("password") password: kotlin.String): Response<kotlin.String>
 
     /**
      * Logs out current logged in user session
@@ -91,10 +91,10 @@ interface UserApi {
      * Responses:
      *  - 0: successful operation
      * 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @GET("user/logout")
-    fun logoutUser(): Call<Unit>
+    suspend fun logoutUser(): Response<Unit>
 
     /**
      * Updated user
@@ -105,9 +105,9 @@ interface UserApi {
      * 
      * @param username name that need to be updated 
      * @param body Updated user object 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @PUT("user/{username}")
-    fun updateUser(@Path("username") username: kotlin.String, @Body body: User): Call<Unit>
+    suspend fun updateUser(@Path("username") username: kotlin.String, @Body body: User): Response<Unit>
 
 }

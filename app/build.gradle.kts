@@ -77,7 +77,7 @@ task<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("generate") {
         "dateLibrary" to "java8"
     ))
     additionalProperties.set(mapOf(
-        "doNotUseRxAndCoroutines" to "true"
+        "useCoroutines" to "true"
     ))
     generateApiTests.set(false)
 }

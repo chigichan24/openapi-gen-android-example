@@ -2,7 +2,7 @@ package net.chigita.openapigenexample.gen.pet.api
 
 import net.chigita.openapigenexample.gen.infrastructure.CollectionFormats.*
 import retrofit2.http.*
-import retrofit2.Call
+import retrofit2.Response
 import okhttp3.RequestBody
 
 import net.chigita.openapigenexample.gen.pet.model.Order
@@ -16,10 +16,10 @@ interface StoreApi {
      *  - 404: Order not found
      * 
      * @param orderId ID of the order that needs to be deleted 
-     * @return [Call]<[Unit]>
+     * @return [Unit]
      */
     @DELETE("store/order/{orderId}")
-    fun deleteOrder(@Path("orderId") orderId: kotlin.Long): Call<Unit>
+    suspend fun deleteOrder(@Path("orderId") orderId: kotlin.Long): Response<Unit>
 
     /**
      * Returns pet inventories by status
@@ -27,10 +27,10 @@ interface StoreApi {
      * Responses:
      *  - 200: successful operation
      * 
-     * @return [Call]<[kotlin.collections.Map<kotlin.String, kotlin.Int>]>
+     * @return [kotlin.collections.Map<kotlin.String, kotlin.Int>]
      */
     @GET("store/inventory")
-    fun getInventory(): Call<kotlin.collections.Map<kotlin.String, kotlin.Int>>
+    suspend fun getInventory(): Response<kotlin.collections.Map<kotlin.String, kotlin.Int>>
 
     /**
      * Find purchase order by ID
@@ -41,10 +41,10 @@ interface StoreApi {
      *  - 404: Order not found
      * 
      * @param orderId ID of pet that needs to be fetched 
-     * @return [Call]<[Order]>
+     * @return [Order]
      */
     @GET("store/order/{orderId}")
-    fun getOrderById(@Path("orderId") orderId: kotlin.Long): Call<Order>
+    suspend fun getOrderById(@Path("orderId") orderId: kotlin.Long): Response<Order>
 
     /**
      * Place an order for a pet
@@ -54,9 +54,9 @@ interface StoreApi {
      *  - 400: Invalid Order
      * 
      * @param body order placed for purchasing the pet 
-     * @return [Call]<[Order]>
+     * @return [Order]
      */
     @POST("store/order")
-    fun placeOrder(@Body body: Order): Call<Order>
+    suspend fun placeOrder(@Body body: Order): Response<Order>
 
 }
