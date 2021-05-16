@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import net.chigita.openapigenexample.R
 
 class MainFragment : Fragment() {
@@ -26,7 +28,17 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel.petLiveData.observeForever {
+            val txtView = this.view?.findViewById<TextView>(R.id.message)
+            txtView?.text = it.toString()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.button).setOnClickListener {
+            viewModel.getPetData()
+        }
     }
 
 }
